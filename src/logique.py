@@ -1,5 +1,5 @@
 
-from grille import Grille
+from .grille import Grille
 
 
 class Logic :
@@ -42,51 +42,41 @@ class Logic :
         return compteur
         
         
+    def CalculerGenerationSuivante (self) -> Grille : 
         
-#creer une nouvele grille vide pour stocker le nouvel etat des cellules
-#parcourir chaque cellule de la grille actuelle 
-#utiliser NombreVoisinsVivants pour obtenir le nombre de voisins vivants
-#appliquer les regles du jeu pour determiner le nouvel etat de la cellule
-#retourner la grille une fois qu'elle sera entirement calculer
-
-
-def CalculerGenerationSuivante (self) -> Grille : 
-    
-    lignes , colonnes = self.grille.obtenir_dimensions() 
-    
-    nouvelle_grille = Grille (lignes , colonnes) 
-    
-    #parcours e chaque cellule de la grille actuelle
-    
-    for i in range (lignes) : 
+        lignes , colonnes = self.grille.obtenir_dimensions() 
         
-        for j in range (colonnes) : 
+        nouvelle_grille = Grille (lignes , colonnes) 
+        
+        #parcours e chaque cellule de la grille actuelle
+        
+        for i in range (lignes) : 
             
-            etat_actuel = self.grille.obtenir_cellule (i , j)
-            
-            nb_voisins = self.NombreVoisinsVivants (i , j)
-            
-            # la cellule conserve son etat patr defaut 
-            
-            nouvel_etat = etat_actuel
-            
-            # premiere regle : cellule meurt avec + 3 voisins et - 2 voisins
-            
-            if etat_actuel == 1 and (nb_voisins < 2 or nb_voisins > 3) : 
+            for j in range (colonnes) : 
                 
-                nouvel_etat = 0
+                etat_actuel = self.grille.obtenir_cellule (i , j)
                 
-            # deuxieme regle : cellule morte nait avec exactement 3 voisins vivants 
-            
-            if etat_actuel == 0 and nb_voisins == 3 : 
+                nb_voisins = self.NombreVoisinsVivants (i , j)
                 
-                nouvel_etat = 1
+                # la cellule conserve son etat patr defaut 
                 
-            # troisieme regle : cellule vivante survie avec 2 ou 3 voisins vivants
-            # dans ce cas si les autres condition ne s'applique pas l'etat reste le meme
-            
-            nouvelle_grille.definir_cellule (i , j , nouvel_etat)
-            
-    return nouvelle_grille
-            
+                nouvel_etat = etat_actuel
                 
+                # premiere regle : cellule meurt avec + 3 voisins et - 2 voisins
+                
+                if etat_actuel == 1 and (nb_voisins < 2 or nb_voisins > 3) : 
+                    
+                    nouvel_etat = 0
+                    
+                # deuxieme regle : cellule morte nait avec exactement 3 voisins vivants 
+                
+                elif etat_actuel == 0 and nb_voisins == 3 : 
+                    
+                    nouvel_etat = 1
+                    
+                # troisieme regle : cellule vivante survie avec 2 ou 3 voisins vivants
+                # dans ce cas si les autres condition ne s'applique pas l'etat reste le meme
+                
+                nouvelle_grille.definir_cellule (i , j , nouvel_etat)
+                
+        return nouvelle_grille

@@ -1,6 +1,6 @@
 import pygame
 import sys
-from src.grille import Grille
+from .grille import Grille
 
 
 class AfficheGrille:

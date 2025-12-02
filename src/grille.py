@@ -61,24 +61,17 @@ class Grille:
                         
                         valeur_int = int(valeur)
                         if valeur_int not in (0, 1):
-                            print(f"❌ Erreur : Valeur invalide trouvée ({valeur}) à la ligne {i+1}, colonne {j+1}. Doit être 0 ou 1.")
-                            # Sortie propre en cas de fichier mal formé
-                            sys.exit(1)
+                            raise ValueError(f"Valeur invalide ({valeur}) à la ligne {i+1}, colonne {j+1}. Doit être 0 ou 1.")
                         
                         self.cellules[i][j] = valeur_int
             
-            print(f"✓ État initial chargé depuis '{etat_initial}' avec succès.")
+            print(f"[OK] État initial chargé depuis '{etat_initial}' avec succès.")
             
         except FileNotFoundError:
-            print(f"❌ Erreur : Le fichier '{etat_initial}' n'existe pas.")
-            sys.exit(1)
+            raise FileNotFoundError(f"Le fichier d'état initial '{etat_initial}' est introuvable.")
         
-        except ValueError:
-            print(f"❌ Erreur : Le fichier contient des valeurs non numériques.")
-            sys.exit(1)
+        except ValueError as e:
+            raise ValueError(f"Erreur de format dans le fichier : {e}")
         
-        except Exception as e:
-            print(f"❌ Erreur inattendue : {e}")
-            sys.exit(1)
-            
-            
+        # Supprimons le bloc Exception générique pour une meilleure clarté.
+        # Les erreurs inattendues seront gérées plus haut dans la pile d'appels.
