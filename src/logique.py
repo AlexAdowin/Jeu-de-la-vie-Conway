@@ -4,64 +4,89 @@ from grille import Grille
 
 class Logic :
     
-    def __init__(self):
+    def __init__(self , grille: Grille):
         
-        self.grille = Grille(50 ,50)    
         
-    def getCellulePosition(self ) : 
+        self.grille = grille
         
-        live = []
+    def NombreVoisinsVivants ( self , ligne : int , colonne : int ) -> int :
         
-        for x in range (self.ligne) :
+        #compter le nombre de voisins vivants pour une cellule donnée 
+        #considerer les cellules hors map comme morte  
+        
+        compteur = 0 
+        
+        lignes , colonnes = self.grille.obtenir_dimensions()
+        
+        #par rapport a la cellule obtenue iterer sur les 8 voisins
+        
+        for i in range(-1,2) :
             
-            for y in range (self.colonne) :
+            for j in range(-1,2) : 
                 
-                if self.grille[x][y] == 1 :
+                if i == 0 and j == 0 : 
                     
-                    live.append(( x , y ))
-        return live    
-    
-    
-    def NombreVoisinsVivants(self , live , x , y) :
-      
-        compteur = 0
-        
-        # Les 8 positions voisines
-        voisins = [
-            (x-1, y+1),  # haut-gauche
-            (x,   y+1),  # haut
-            (x+1, y+1),  # haut-droite
-            (x-1, y),    # gauche
-            (x+1, y),    # droite
-            (x-1, y-1),  # bas-gauche
-            (x,   y-1),  # bas
-            (x+1, y-1)   # bas-droite
-        ]
-        
-        for voisin in voisins:
-            if voisin in live:  # Vérifier si le voisin est dans la liste des cellules vivantes
-                compteur += 1
-        
+                    continue # ignore la cellule centrale 
+                
+                voisin_ligne , voisin_colonne = ligne  + i , colonne + j 
+                
+                #verifier si le voisin est dans les limites de la grille
+                
+                if 0 <= voisin_ligne < lignes and 0 <= voisin_colonne < colonnes :
+                    
+                    #si le voisin est vivant incrementer le compteur
+                    if self.grille.obtenir_cellule (voisin_ligne , voisin_colonne) == 1 :
+                        
+                        compteur += 1 
+                        
         return compteur
         
         
-    def CycleCellule(self , compteur , live ) :        
         
-        if compteur == 2 :
-            
-            return 1
-        
-        elif compteur == 3 : 
-            
-            
-            
-            
-    
-    
-    
+#creer une nouvele grille vide pour stocker le nouvel etat des cellules
+#parcourir chaque cellule de la grille actuelle 
+#utiliser NombreVoisinsVivants pour obtenir le nombre de voisins vivants
+#appliquer les regles du jeu pour determiner le nouvel etat de la cellule
+#retourner la grille une fois qu'elle sera entirement calculer
 
-    def CalculerGenerationSuivante (self) :
+
+def CalculerGenerationSuivante (self) -> Grille : 
+    
+    lignes , colonnes = self.grille.obtenir_dimensions() 
+    
+    nouvelle_grille = Grille (lignes , colonnes) 
+    
+    #parcours e chaque cellule de la grille actuelle
+    
+    for i in range (lignes) : 
         
-        pass
-    
-    
+        for j in range (colonnes) : 
+            
+            etat_actuel = self.grille.obtenir_cellule (i , j)
+            
+            nb_voisins = self.NombreVoisinsVivants (i , j)
+            
+            # la cellule conserve son etat patr defaut 
+            
+            nouvel_etat = etat_actuel
+            
+            # premiere regle : cellule meurt avec + 3 voisins et - 2 voisins
+            
+            if etat_actuel == 1 and (nb_voisins < 2 or nb_voisins > 3) : 
+                
+                nouvel_etat = 0
+                
+            # deuxieme regle : cellule morte nait avec exactement 3 voisins vivants 
+            
+            if etat_actuel == 0 and nb_voisins == 3 : 
+                
+                nouvel_etat = 1
+                
+            # troisieme regle : cellule vivante survie avec 2 ou 3 voisins vivants
+            # dans ce cas si les autres condition ne s'applique pas l'etat reste le meme
+            
+            nouvelle_grille.definir_cellule (i , j , nouvel_etat)
+            
+    return nouvelle_grille
+            
+                
