@@ -1,8 +1,10 @@
+#chose a faire  :  
+ 
 #  Créer une grille initiale.
 #  Charger un état initial depuis etat_initial.txt si vous en avez un, sinon il initialise un "blinker" simple pour tester.
 #  Initialiser la logique du jeu.
-#  Initialiser l'affichage Pygame.
-#  Exécuter une boucle principale qui calcule les générations successives et les affiche.
+#  Initialiser l'affichage Pygame.  
+#Exécuter une boucle principale qui calcule les générations successives et les affiche.
 
 import pygame
 import sys
@@ -13,11 +15,11 @@ from src.affichage import AfficheGrille
 
 #parametre de simulation 
 
-TAILLE_GRILLE = 50
+TAILLE_GRILLE = 100
 
 FICHIER_ETAT_INITIAL = "src/etat_initial.txt"  
 
-VITESSE_FPS = 3.5
+VITESSE_FPS = 5
 
 def main()  :
     

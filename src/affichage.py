@@ -89,5 +89,5 @@ class AfficheGrille:
 
 if __name__ == "__main__":
     
-    jeu = AfficheGrille(Grille (50, 50))
+    jeu = AfficheGrille(Grille (100, 100))
     jeu.run()
